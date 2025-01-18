@@ -67,22 +67,6 @@ export default class IndexPost {
     ctx.state.height = ctx.req.body.height || null
 
     let rateLimited = false
-    let redisKey = 'ratelimit_' + ctx.req.ip.replace(/:/g, '-')
-
-    try {
-      let val = (await ctx.redis.get(redisKey))
-      val = val && Number(val) || 0
-      if (val > 3) {
-        rateLimited = true
-      } else if (val > 2) {
-        await ctx.redis.setex(redisKey, 60 * 15, val + 1)
-        rateLimited = true
-      } else {
-        await ctx.redis.setex(redisKey, 15, val + 1)
-      }
-    } catch (err) {
-      ctx.log.error(err, 'Error checking rate limit for ' + redisKey)
-    }
 
     if (rateLimited) {
       ctx.state.error = 'You have reached rate limit. Please wait at least 15 minutes.'
