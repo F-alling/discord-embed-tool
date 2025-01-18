@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Discord Embedder from AV1 server 1.0.28</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{ if (imageLink) { }}
+  <meta property="og:image" content="{{=imageLink}}">
+  <meta property="og:type" content="video.other">
+  <meta property="og:video:url" content="{{=videoLink}}">
+  <meta property="og:video:width" content="{{=width}}">
+  <meta property="og:video:height" content="{{=height}}">
+  {{ } else { }}
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{=siteUrl}}" />
+  <meta property="og:image" content="/heart.png" />
+  <meta property="og:description" content="Simple site to help with embedding of AV1 videos and large/external videos into Discord." />
+  <meta property="og:title" content="Discord Embedder Helper Website" />
+  {{ } }}
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <style>
+
+:root {
+  --content-max-width: 1280px;
+  --bg: black;
+  --bg-content-alt: #333;
+  --color: #d7dadc;
+  --link: #bb4d00;
+  --button-border: 1px solid #f57c00;
+  --button-bg: #ffad42;
+  --button-fg: #000;
+  --error: red;
+}
+    
+/* Box sizing rules */
+*, *::before, *::after { box-sizing: border-box;
+}
+
+/* Remove default margin */
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-size: 16px;
+  padding: 1rem 0.5rem 3rem;
+  font-family: sans-serif;
+  background: var(--bg);
+  color: var(--color);
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+h1 {
+  font-size: 1.88rem;
+}
+h2 {
+  font-size: 1.66rem;
+}
+h3 {
+  font-size: 1.44rem;
+}
+h4 {
+  font-size: 1.22rem;
+}
+h5 {
+  font-size: 1.0rem;
+}
+
+a, a:visited, button {
+  text-decoration: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+input[type=text] {
+  border: 1px solid var(--color);
+  background: var(--bg);
+  color: var(--color);
+  border-radius: 0;
+  padding: 0.25rem;
+  line-height: 1rem;
+  outline: none;
+  width: 100%;
+}
+
+label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin: 0.5rem 0;
+  display: block;
+}
+
+input[type=text]:hover,
+input[type=text]:active,
+input[type=text]:focus {
+  border-color: var(--link);
+}
+
+input[type=text]:focus {
+  outline: 1px solid var(--link);
+}
+
+button,
+input[type=submit] {
+  border: var(--button-border);
+  background: var(--button-bg);
+  color: var(--button-fg);
+  padding: 0.25rem 1rem;
+  margin: 0rem 0 2rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row-item {
+  flex: 2 0 200px;
+  align-self: flex-end;
+}
+
+.row-item input {
+  width: 100%;
+}
+
+.row-inbetween {
+  align-self: flex-end;
+  padding: 0.25rem 1rem;
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.8rem;
+  padding: 1rem 1rem 0;
+}
+
+.center {
+  text-align: center;
+}
+
+video {
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100vh - 140px);
+}
+
+.inside {
+  width: 100%;
+  max-width: var(--content-max-width);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 0.5rem;
+}
+
+.warning {
+  font-size: 0.9rem;
+  color: #ffe69c;
+  margin-bottom: 0.5rem;
+}
+
+.alert {
+  font-size: 0.9rem;
+  margin: 0.5rem 0 1rem;
+  color: hsl(353.7, 70.5%, 87%);
+}
+
+.info {
+  font-size: 0.9rem;
+  color: #a3cfbb;
+  margin-bottom: 0.5rem;
+}
+.info a, .info a:visited, .info a:hover {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.optional {
+  margin: 0 -0.5rem 0.5rem;
+  padding: 0rem 0.5rem 1rem;
+  background: var(--bg-content-alt);
+}
+
+#testing {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.hidden {
+  display: none !important;
+}
+
+pre {
+  padding: 0.5rem !important;
+  white-space: break-spaces;
+  word-break: break-all;
+}
+
+#mainplayer {
+  max-width: calc(100vw - 1rem);
+  max-height: 95vh;
+}
+
+#previewVideo {
+  border: 1px solid white;
+  max-width: 100%;
+}
+
+  </style>
+</head>
+<body>
+  {{ if (videoLink && imageLink) { }}
+    <p>Your link is:</p>
+    <pre>{{=siteUrl}}</pre>
+    <div class="center">
+      <video id=mainplayer" crossorigin controls poster="{{=imageLink}}">
+        <source src="{{=videoLink}}">
+      </video>
+    </div>
+  {{ } }}
+  <form action="/" method="post" enctype="multipart/form-data" class="inside">
+    <h1>Embed {{ if (videoLink && imageLink) { }} another {{ } }} video for discord:</h1>
+    <p>Use this tool to generate links that forces discord to try and play a video or movie directly inside discord. By default, discord will not show video playback for video links that are too large or not in proper format. This tool forces discord to at least try.</p>
+
+    <p class="warning">Only sites and filesharing sites that have direct link to the video will work and play in discord. Youtube has it's own player and will not work. Many video sites will have their own player and will not work.</p>
+
+    <p class="info">Video upload sites that work are sites like <a href="https://catbox.moe/" target="_blank">catbox.moe</a> and other sites that allow <b>direct link to video file</b> will work.</p>
+
+    {{ if (error) { }}<p class="error">{{=error}}</p>{{ } }}
+    <p> </p>
+    <label>Link to video file you want to play in discord*</label>
+    <input id="inputVideo" type="text" name="video" value="{{=inputVideo}}">
+    <p class="alert">
+      <b>.mkv</b> video files will <b>not work</b>! <b>HEVC/h.265</b> will also <b>not work</b>! File hosting sites like <b>mediafire/google drive/dropbox</b> will also probably <b>not work</b>!<br>
+    </p>
+    <div class="row optional">
+      <div class="row-item">
+        <label>Optional: Link to image to show before discord user presses play</label>
+        <input id="inputImage" type="text" name="image" value="{{=inputImage}}">
+      </div>
+      <span class="row-inbetween">or</span>
+      <div class="row-item">
+        <label>Optional: Upload image to show before discord user presses play</label>
+        <input type="file" name="media" type="image">
+      </div>
+    </div>
+
+    <div class="row optional">
+      <div class="row-item">
+        <label>Optional: Overwrite aspect ratio from default 16:9 (1280x720)</label>
+        <input id="inputWidth" type="text" name="width" value="{{=inputWidth}}">
+      </div>
+      <span class="row-inbetween">x</span>
+      <div class="row-item">
+        <label>&nbsp;</label>
+        <input id="inputHeight" type="text" name="height" value="{{=inputHeight}}">
+      </div>
+    </div>
+
+    <div id="testing" class="hidden">
+      <p>Test area (does the video load and play? If not, it might not work on discord)</p>
+
+      <div class="center">
+        <video class="hidden" id="previewVideo" crossorigin controls poster="" preload="none">
+          <source src="">
+        </video>
+      </div>
+
+      <pre class="optional" id="generateurl">{{=siteUrlBase}}?v=&lt;video link&gt;</pre>
+
+      <input type="submit" value="Generate shorter url">
+    </div>
+  </form>
+
+  <script type="text/javascript" nonce="{{=nonce}}">
+    var defaultPoster = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAAAALQAQAAAADnBuD7AAAAh0lEQVR42u3BMQEAAADCIPuntsROYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACkDsTfAAFMFnd/AAAAAElFTkSuQmCC';
+    var baseSite = '{{=siteUrlBase}}';
+    var existingVideoUrl = '{{=inputVideo}}';
+    var testing = document.getElementById('testing');
+    var generateurl = document.getElementById('generateurl');
+    var inputVideo = document.getElementById('inputVideo');
+    var inputImage = document.getElementById('inputImage');
+    var inputWidth = document.getElementById('inputWidth');
+    var inputHeight = document.getElementById('inputHeight');
+    var previewVideo = document.getElementById('previewVideo');
+    var isExample = true;
+    previewVideo.poster = defaultPoster;
+
+    function checkChange() {
+      var currentIsExample = true;
+      if (inputVideo.value) {
+        currentIsExample = false;
+      }
+      if (isExample && currentIsExample) { return; }
+      isExample = currentIsExample;
+      if (isExample) {
+        generateurl.innerText = baseSite + '?v=<video link>';
+        previewVideo.classList.add('hidden')
+      } else {
+        generateurl.innerText = baseSite + '?v=' + encodeURIComponent(inputVideo.value)
+          + (inputImage.value ? '&i=' + encodeURIComponent(inputImage.value) : '')
+          + (inputWidth.value !== '1280' ? '&w=' + encodeURIComponent(inputWidth.value) : '')
+          + (inputHeight.value !== '720' ? '&h=' + encodeURIComponent(inputHeight.value) : '');
+
+        previewVideo.pause();
+        if (inputVideo.value !== existingVideoUrl) {
+          previewVideo.setAttribute('poster', inputImage.value || defaultPoster);
+          previewVideo.children[0].setAttribute('src', inputVideo.value);
+          previewVideo.classList.remove('hidden');
+          testing.classList.remove('hidden');
+        } else {
+          previewVideo.removeAttribute('poster');
+          previewVideo.children[0].removeAttribute('src');
+          previewVideo.classList.add('hidden')
+          testing.classList.add('hidden');
+        }
+        previewVideo.load();
+      }
+    };
+
+    inputVideo.addEventListener('change', checkChange);
+    inputImage.addEventListener('change', checkChange);
+    inputWidth.addEventListener('change', checkChange);
+    inputHeight.addEventListener('change', checkChange);
+    inputVideo.addEventListener('keyup', checkChange);
+    inputImage.addEventListener('keyup', checkChange);
+    inputWidth.addEventListener('keyup', checkChange);
+    inputHeight.addEventListener('keyup', checkChange);
+    checkChange()
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "dot": "^2.0.0-beta.1",
+    "flaska": "^1.3.2",
+    "formidable": "^1.2.6",
+    "msnodesqlv8": "^4.4.0",
+    "nconf-lite": "^2.0.0"
+  }
+}

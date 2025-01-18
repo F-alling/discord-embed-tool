@@ -1,0 +1,49 @@
+{
+  "name": "discord_embed",
+  "version": "1.0.28",
+  "port": 4120,
+  "description": "AV1 discord server embed helper",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node index.mjs",
+    "dev:server": "node index.mjs | bunyan",
+    "dev": "npm-watch dev:server"
+  },
+  "watch": {
+    "dev:server": {
+      "patterns": [
+        "api/*",
+        "base/*",
+        "../base/*"
+      ],
+      "extensions": "js,mjs",
+      "quiet": true,
+      "inherit": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.nfp.is/nfp/nfp_sites.git"
+  },
+  "author": "Jonatan Nilsson",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://git.nfp.is/nfp/nfp_sites/issues"
+  },
+  "homepage": "https://git.nfp.is/nfp/nfp_sites",
+  "dependencies": {
+    "bunyan-lite": "^1.2.1",
+    "dot": "^2.0.0-beta.1",
+    "flaska": "^1.3.4",
+    "formidable": "^1.2.6",
+    "ioredis": "^5.2.3",
+    "msnodesqlv8": "^4.1.1",
+    "nconf-lite": "^2.0.0"
+  },
+  "devDependencies": {
+    "service-core": "^3.0.0-beta.17"
+  }
+}
