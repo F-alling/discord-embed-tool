@@ -21,12 +21,16 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build the project
-      run: node index.mjs # Optional: only needed if you need to build your app (e.g., with React)
+    - name: Run the app and prepare static files
+      run: |
+        node index.mjs  # You can also prepare static files by running your app
+        mkdir -p public
+        cp -r * public/  # Copy all relevant files to the public folder
+        # If you have specific directories like "dist", add them here
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         personal_token: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token
         branch: gh-pages  # The branch where your app will be deployed
-        folder: build  # The folder containing your app (e.g., 'build' for React apps or 'public' for static sites)
+        folder: public  # Folder with your static files to deploy
